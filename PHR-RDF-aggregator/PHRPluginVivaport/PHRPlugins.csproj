@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D6AE317E-1D8F-4871-822B-C746F481E27C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>VULSK.CarrePHRAggregator.PHRInputVivaport</RootNamespace>
+    <AssemblyName>VULSK.CarrePHRAggregator.PHRInputVivaport</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\PHR-RDF-aggregator\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\PHR-RDF-aggregator\bin\Release\Plugin.PHR\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Mail">
+      <HintPath>..\packages\Mail.dll.3.0.14228.1107\lib\Mail.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Health">
+      <HintPath>..\packages\HealthVault.NET.2.1.0.3\lib\net40\Microsoft.Health.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Health.ItemTypes">
+      <HintPath>..\packages\HealthVault.NET.2.1.0.3\lib\net40\Microsoft.Health.ItemTypes.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Health.ItemTypes.Old">
+      <HintPath>..\packages\HealthVault.NET.2.1.0.3\lib\net40\Microsoft.Health.ItemTypes.Old.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Health.Web">
+      <HintPath>..\packages\HealthVault.NET.2.1.0.3\lib\net40\Microsoft.Health.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="PHRPluginHealthVault.cs" />
+    <Compile Include="PHRPluginVivaport.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataSpecification\DataSpecification.csproj">
+      <Project>{6a004051-b6d6-4f9f-9a7c-fa666a9a4e32}</Project>
+      <Name>DataSpecification</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IPHRInput\PHRInput.csproj">
+      <Project>{06811c54-2a6f-4bb8-96b9-f01d4d5651ea}</Project>
+      <Name>PHRInput</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
