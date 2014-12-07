@@ -1,26 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VULSK.CarrePHRAggregator.DataSpecification;
-using VULSK.CarrePHRAggregator.PHRInput;
-using System.Reflection;
-
-namespace VULSK.CarrePHRAggregator.PHRInputVivaport
+﻿namespace Vulsk.CarrePhrAggregator.PhrPlugins
 {
-	public class PHRPluginVivaport:IPHRInput
-	{
-		
-		private SourceIdentifier _sourceID=new SourceIdentifier() {
-				  InternalId=typeof(PHRPluginVivaport).GetType().GUID,
-				  SourceName="Vivaport.eu"
-		};
-		public SourceIdentifier Source { get { return _sourceID; } }
+	using DataSpecification;
 
-		public PHRData GetData(PatientIdentifier p)
+	public class PhrPluginVivaport : IPhrInput
+	{
+
+		private readonly SourceIdentifier _sourceId = new SourceIdentifier {
+			InternalId = typeof(PhrPluginVivaport).GUID,
+			SourceName = "Vivaport.eu"
+		};
+		public SourceIdentifier Source { get { return _sourceId; } }
+
+		public PhrData GetData(PatientIdentifier p)
 		{
-			PHRData retData=new PHRData();
+			var retData = new PhrData();
 
 			return retData;
 		}

@@ -1,33 +1,34 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using VULSK.CarrePHRAggregator.PHRInputHealthVault;
-using VULSK.CarrePHRAggregator.DataSpecification;
-using VULSK.CarrePHRAggregator.RUM;
-using VULSK.CarrePHRAggregator.ResourceOutput;
-using System.Collections.Generic;
 
 namespace TestCases
 {
+	using Vulsk.CarrePhrAggregator.PhrPlugins;
+	using Vulsk.CarrePhrAggregator.DataSpecification;
+	using Vulsk.CarrePhrAggregator.Rum;
+	using Vulsk.CarrePhrAggregator.ResourceOutput;
+
 	[TestClass]
 	public class TestCases
 	{
+		private const string PGuid = "5c30ee9a-2e63-42c7-b418-ef4fe2f3e565";
+
 		[TestMethod]
 		public void TestCreate()
 		{
-			PatientIdentifier p = new PatientIdentifier() { InternalId = new Guid("1b1a04ae-7921-4b6a-a188-7683b83a78b8") };
-			PHRData phrd=new PHRPluginHealthVault().GetData(p);
-			Assert.IsTrue(phrd.Data.Count>0);
+			var p = new PatientIdentifier { InternalId = new Guid(PGuid) };
+			var phrd = new PhrPluginHealthVault().GetData(p);
+			Assert.IsTrue(phrd.Data.Count > 0);
 		}
 
 		[TestMethod]
-		public void TestRUM()
+		public void TestRum()
 		{
-			RUM rum=new RUM();
-			List<PHRData> PD= rum.GetPatientData(new PatientIdentifier() { InternalId = new Guid("1b1a04ae-7921-4b6a-a188-7683b83a78b8") });
+			var rum = new Rum();
+			var pd = rum.GetPatientData(new PatientIdentifier { InternalId = new Guid(PGuid) });
 
-			ResourceOutput ro=new ResourceOutput();
-			ro.Output(rum.ToXML(PD));
-			
+			var output = ResourceOutput.Output(Rum.ToXml(pd));
+			output.Save("RumOutputTest.xml");
 		}
 	}
 }

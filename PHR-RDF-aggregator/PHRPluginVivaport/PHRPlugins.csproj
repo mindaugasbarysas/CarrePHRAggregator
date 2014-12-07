@@ -7,10 +7,11 @@
     <ProjectGuid>{D6AE317E-1D8F-4871-822B-C746F481E27C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VULSK.CarrePHRAggregator.PHRInputVivaport</RootNamespace>
-    <AssemblyName>VULSK.CarrePHRAggregator.PHRInputVivaport</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>Vulsk.CarrePhrAggregator.PhrPlugins</RootNamespace>
+    <AssemblyName>Vulsk.CarrePhrAggregator.PhrPlugins</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

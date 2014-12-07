@@ -1,38 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Health;
-using Microsoft.Health.Web;
-using Microsoft.Health.PatientConnect;
-using Microsoft.Health.Authentication;
-using Microsoft.Health.Web.Authentication;
 using Microsoft.Health.ItemTypes;
-using VULSK.CarrePHRAggregator.DataSpecification;
-using Limilabs.Mail;
 
-namespace VULSK.CarrePHRAggregator.PHRInputHealthVault
+namespace Vulsk.CarrePhrAggregator.PhrPlugins
 {
-	public class PHRPluginHealthVault
-	{
-		private Guid ClientID = new Guid("8AE962DB-D869-4E84-9B39-1FF38F235006");
-		private Guid MasterID = new Guid("99C20788-9FE4-496E-A149-8BB210A01C66");
-		private Uri ShellURI = new Uri("https://account.healthvault-ppe.co.uk/");
-		private Uri PlatformURI = new Uri("https://platform.healthvault-ppe.co.uk/platform");
+	using DataSpecification;
 
-		private SourceIdentifier _sourceID = new SourceIdentifier()
-		{
-			InternalId = typeof(PHRPluginHealthVault).GetType().GUID,
+    public class PhrPluginHealthVault : IPhrInput
+	{
+		private readonly Guid _clientId = new Guid("10EA5F9A-7013-404F-9CFC-17332D724A57");
+		private readonly Guid _masterId = new Guid("99C20788-9FE4-496E-A149-8BB210A01C66");
+		private readonly Uri _shellUri = new Uri("https://account.healthvault-ppe.co.uk/");
+		private readonly Uri _platformUri = new Uri("https://platform.healthvault-ppe.co.uk/platform");
+
+		private readonly SourceIdentifier _sourceId = new SourceIdentifier {
+			InternalId = typeof(PhrPluginHealthVault).GUID,
 			SourceName = "Microsoft HealthVault"
 		};
-		public SourceIdentifier Source { get { return _sourceID; } }
+		public SourceIdentifier Source { get { return _sourceId; } }
 
 
-		public PHRData GetData(PatientIdentifier p)
+		public PhrData GetData(PatientIdentifier p)
 		{
-			HealthClientApplication clientApp = HealthClientApplication.Create(ClientID, MasterID, ShellURI, PlatformURI);
+			var clientApp = HealthClientApplication.Create(_clientId, _masterId, _shellUri, _platformUri);
 
 			if (clientApp.GetApplicationInfo() == null)
 			{
@@ -41,43 +33,44 @@ namespace VULSK.CarrePHRAggregator.PHRInputHealthVault
 				return null;
 			}
 
-			PersonInfo pi = clientApp.ApplicationConnection.GetAuthorizedPeople().Where(k => k.PersonId == p.InternalId).FirstOrDefault();
+			var ap = clientApp.ApplicationConnection.GetAuthorizedPeople().ToList();
+
+            var pi = clientApp.ApplicationConnection.GetAuthorizedPeople().FirstOrDefault(k => k.PersonId == p.InternalId);
 			if (pi == null)
 			{
 				clientApp.StartUserAuthorizationProcess();
 				return null; // not authorized;
 			}
 
-			HealthClientAuthorizedConnection authConnection = clientApp.CreateAuthorizedConnection(pi.PersonId);
-			HealthRecordAccessor access = new HealthRecordAccessor(authConnection, authConnection.GetPersonInfo().GetSelfRecord().Id);
+			var authConnection = clientApp.CreateAuthorizedConnection(pi.PersonId);
+			var access = new HealthRecordAccessor(authConnection, authConnection.GetPersonInfo().GetSelfRecord().Id);
 
-			PHRData ret = new PHRData() { Data = new List<DataUnit>(), Patient = p, Source = this.Source };
-			ret.Data.Add(new DataUnit() { Name = "Name", OntologicName = "rdf:Name", Value = pi.Name });
-			Basic b = GetSingleValue<Basic>(Basic.TypeId, access);
-			ret.Data.Add(new DataUnit()
-			{
+			var ret = new PhrData { Data = new List<DataUnit>(), Patient = p, Source = Source };
+			ret.Data.Add(new DataUnit { Datetime = DateTime.UtcNow, Name = "Name", OntologicName = "rdf:Name", Value = pi.Name });
+			var b = GetSingleValue<Basic>(Basic.TypeId, access);
+			ret.Data.Add(new DataUnit {
+				Datetime = b.EffectiveDate,
 				Name = "Birth date",
 				OntologicName = "rdf:BDate",
-				Value = (b != null) ? b.BirthYear : -1
+				Value = b.BirthYear
 			});
-			ret.Data.Add(new DataUnit()
-			{
+			var gender = b.Gender ?? Gender.Unknown;
+            ret.Data.Add(new DataUnit {
+				Datetime = b.EffectiveDate,
 				Name = "Gender",
 				OntologicName = "rdf:Gender",
-				Value = (b != null) ?
-				(b.Gender.Value == Gender.Male) ? "male" : (b.Gender.Value == Gender.Female) ? "female" : "unknown" : "unknown"
-			}); // sorry about readability, really, this could have been much much much more elegant
-			ret.Data.Add(new DataUnit()
-			{
+				Value = gender == Gender.Male ? "male" : gender == Gender.Female ? "female" : "unknown"
+			});
+			ret.Data.Add(new DataUnit {
+				Datetime = b.EffectiveDate,
 				Name = "Country",
 				OntologicName = "rdf:Country",
-				Value = (b != null) ? b.Country : "unknown"
+				Value = b.Country
 			});
-			List<Height> heights = GetValues<Height>(Height.TypeId, access);
-			foreach (Height h in heights)
+			var heights = GetValues<Height>(Height.TypeId, access);
+			foreach (var h in heights)
 			{
-				ret.Data.Add(new DataUnit()
-				{
+				ret.Data.Add(new DataUnit {
 					Datetime = h.EffectiveDate,
 					Name = "Height_meters",
 					OntologicName = "rdf:Height",
@@ -85,11 +78,10 @@ namespace VULSK.CarrePHRAggregator.PHRInputHealthVault
 				});
 			}
 
-			List<Weight> weights = GetValues<Weight>(Weight.TypeId, access);
-			foreach (Weight w in weights)
+			var weights = GetValues<Weight>(Weight.TypeId, access);
+			foreach (var w in weights)
 			{
-				ret.Data.Add(new DataUnit()
-				{
+				ret.Data.Add(new DataUnit {
 					Datetime = w.EffectiveDate,
 					Name = "weight_kg",
 					OntologicName = "rdf:Height",
@@ -101,42 +93,32 @@ namespace VULSK.CarrePHRAggregator.PHRInputHealthVault
 			return ret;
 		}
 
-		private T GetSingleValue<T>(Guid typeID, HealthRecordAccessor access) where T : class
+		private static T GetSingleValue<T>(Guid typeId, HealthRecordAccessor access) where T : class
 		{
-			HealthRecordSearcher searcher = access.CreateSearcher();
+			var searcher = access.CreateSearcher();
 
-			HealthRecordFilter filter = new HealthRecordFilter(typeID);
+			var filter = new HealthRecordFilter(typeId);
 			searcher.Filters.Add(filter);
 
-			HealthRecordItemCollection items = searcher.GetMatchingItems()[0];
+			var items = searcher.GetMatchingItems()[0];
 
 			if (items != null && items.Count > 0)
 			{
 				return items[0] as T;
 			}
-			else
-			{
-				return null;
-			}
+			return null;
 		}
 
-		private List<T> GetValues<T>(Guid typeID, HealthRecordAccessor access) where T : HealthRecordItem
+		private static List<T> GetValues<T>(Guid typeId, HealthRecordAccessor access) where T : HealthRecordItem
 		{
-			HealthRecordSearcher searcher = access.CreateSearcher();
+			var searcher = access.CreateSearcher();
 
-			HealthRecordFilter filter = new HealthRecordFilter(typeID);
+			var filter = new HealthRecordFilter(typeId);
 			searcher.Filters.Add(filter);
 
-			HealthRecordItemCollection items = searcher.GetMatchingItems()[0];
+			var items = searcher.GetMatchingItems()[0];
 
-			List<T> typedList = new List<T>();
-
-			foreach (HealthRecordItem item in items)
-			{
-				typedList.Add((T)item);
-			}
-
-			return typedList;
+			return items.Cast<T>().ToList();
 		}
 	}
 }

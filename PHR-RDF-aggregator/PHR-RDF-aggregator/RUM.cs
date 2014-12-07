@@ -2,45 +2,41 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using VULSK.CarrePHRAggregator.DataSpecification;
-using VULSK.CarrePHRAggregator.PHRInput;
 using System.Reflection;
-using System.ComponentModel;
 using System.IO;
 using System.Xml.Serialization;
 using System.Xml;
 
-namespace VULSK.CarrePHRAggregator.RUM
+namespace Vulsk.CarrePhrAggregator.Rum
 {
+	using DataSpecification;
 
-
-	public class RUM
+	public class Rum
 	{
-		private List<IPHRInput> _availablePhrs=new List<IPHRInput>();
+		private readonly List<IPhrInput> _availablePhrs = new List<IPhrInput>();
 
-		public RUM()
+		public Rum()
 		{
-			string path = Path.GetFullPath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase.Replace(@"file:///", "")));
-			string[] pluginFiles = Directory.GetFiles(path, "*.dll");
+			var path = Path.GetFullPath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase.Replace(@"file:///", "")));
+			var pluginFiles = Directory.GetFiles(path, "*.dll");
 
 			var ipi = (
 				from file in pluginFiles
 				let asm = Assembly.LoadFile(file)
 				from type in asm.GetExportedTypes()
-				where typeof(IPHRInput).IsAssignableFrom(type) && type!=typeof(IPHRInput)
+				where typeof(IPhrInput).IsAssignableFrom(type) && type != typeof(IPhrInput)
 				select Activator.CreateInstance(type)
 			).ToArray();
-			_availablePhrs.AddRange(_availablePhrs);
+			_availablePhrs.AddRange(ipi.Select(i => (IPhrInput)i));
 		}
 
-		public List<PHRData> GetPatientData(PatientIdentifier p)
+		public List<PhrData> GetPatientData(PatientIdentifier p)
 		{
-			List<PHRData> retList = new List<PHRData>();
-			foreach (IPHRInput phrSource in _availablePhrs)
+			var retList = new List<PhrData>();
+			foreach (var phrSource in _availablePhrs)
 			{
-				if (phrSource.Source!=null)
-				{ 
+				if (phrSource.Source != null)
+				{
 					retList.Add(phrSource.GetData(p));
 					//weighting/deduplication logic could go here
 				}
@@ -48,22 +44,20 @@ namespace VULSK.CarrePHRAggregator.RUM
 			return retList;
 		}
 
-		public XmlDocument ToXML(List<PHRData> input)
+		public static XmlDocument ToXml(List<PhrData> input)
 		{
-			XmlSerializer xs=new XmlSerializer(typeof(List<PHRData>));
-			MemoryStream ms=new MemoryStream();
+			var xs = new XmlSerializer(typeof(List<PhrData>));
+			var ms = new MemoryStream();
 			xs.Serialize(ms, input);
-			XmlDocument xd=new XmlDocument();
-			ms.Position=0L;
+			var xd = new XmlDocument();
+			ms.Position = 0L;
 			xd.LoadXml(Encoding.UTF8.GetString(ms.ToArray()));
 			return xd;
 		}
 
-		public PHRData GetPatientData(PatientIdentifier p, IPHRInput phrInput)
+		public PhrData GetPatientData(PatientIdentifier p, IPhrInput phrInput)
 		{
 			return phrInput.GetData(p);
 		}
-
-
 	}
 }

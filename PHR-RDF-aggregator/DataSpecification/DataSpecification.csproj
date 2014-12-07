@@ -7,10 +7,11 @@
     <ProjectGuid>{6A004051-B6D6-4F9F-9A7C-FA666A9A4E32}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VULSK.CarrePHRAggregator.DataSpecification</RootNamespace>
-    <AssemblyName>VULSK.CarrePHRAggregator.DataSpecification</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>Vulsk.CarrePhrAggregator.DataSpecification</RootNamespace>
+    <AssemblyName>Vulsk.CarrePhrAggregator.DataSpecification</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

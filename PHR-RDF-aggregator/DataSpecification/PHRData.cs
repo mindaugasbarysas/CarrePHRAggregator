@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace VULSK.CarrePHRAggregator.DataSpecification
+namespace Vulsk.CarrePhrAggregator.DataSpecification
 {
 	/// <summary>
 	/// Single data bit from any repo
 	/// </summary>
 	public class DataUnit
 	{
-		public DateTime Datetime { get;set;}
+		public DateTime Datetime { get; set; }
 		public string Name { get; set; }
 		public object Value { get; set; }
 		public string OntologicName { get; set; }
@@ -21,7 +18,7 @@ namespace VULSK.CarrePHRAggregator.DataSpecification
 	/// <summary>
 	/// Data collection with source and patient identification
 	/// </summary>
-	public class PHRData
+	public class PhrData
 	{
 		public PatientIdentifier Patient { get; set; }
 		public SourceIdentifier Source { get; set; }

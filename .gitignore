@@ -155,6 +155,5 @@ $RECYCLE.BIN/
 # Mac desktop service store files
 .DS_Store
 
-
-WEB/eli/Global.asa
-WEB/eli/Web.config
+# Temporary files used by Roslyn Compiler engine
+*.sln.ide/
