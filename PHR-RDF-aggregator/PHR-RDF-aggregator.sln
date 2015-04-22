@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResourceUnificationModule", "PHR-RDF-aggregator\ResourceUnificationModule.csproj", "{C9394FD3-6329-4D44-9DAF-E51ADBE07819}"
 EndProject
@@ -14,6 +14,17 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResourceOutput", "ResourceOutput\ResourceOutput.csproj", "{6281E159-DF4F-4DB7-90CC-CD81E2565FB0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCases", "TestCases\TestCases.csproj", "{6ECB8032-887C-4541-B9FD-642D603335AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResourceConfiguration", "ResourceConfiguration\ResourceConfiguration.csproj", "{E93B3ED7-96C7-428C-B4A6-D96C2C3C7035}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PHRConfigurators", "PHRConfigurators\PHRConfigurators.csproj", "{00FF71A5-0695-4BEA-8F87-9E069C164AD5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{24A37F0E-0438-4E5E-B90B-45477259C30F}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +56,14 @@ Global
 		{6ECB8032-887C-4541-B9FD-642D603335AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6ECB8032-887C-4541-B9FD-642D603335AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6ECB8032-887C-4541-B9FD-642D603335AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E93B3ED7-96C7-428C-B4A6-D96C2C3C7035}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E93B3ED7-96C7-428C-B4A6-D96C2C3C7035}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E93B3ED7-96C7-428C-B4A6-D96C2C3C7035}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E93B3ED7-96C7-428C-B4A6-D96C2C3C7035}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00FF71A5-0695-4BEA-8F87-9E069C164AD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00FF71A5-0695-4BEA-8F87-9E069C164AD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00FF71A5-0695-4BEA-8F87-9E069C164AD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00FF71A5-0695-4BEA-8F87-9E069C164AD5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

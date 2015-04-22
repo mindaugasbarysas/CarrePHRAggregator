@@ -18,7 +18,7 @@ namespace Vulsk.CarrePhrAggregator.PhrPlugins
 		};
 		public SourceIdentifier Source { get { return _sourceId; } }
 
-		public PhrData GetData(PatientIdentifier p)
+		public PhrData GetData(PatientIdentifier p, Configuration config)
 		{
 			var ret = new PhrData { Data = new List<DataUnit>(), Patient = p, Source = Source };
 

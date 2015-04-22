@@ -22,7 +22,7 @@ namespace Vulsk.CarrePhrAggregator.PhrPlugins
 		public SourceIdentifier Source { get { return _sourceId; } }
 
 
-		public PhrData GetData(PatientIdentifier p)
+		public PhrData GetData(PatientIdentifier p, Configuration c)
 		{
 			var clientApp = HealthClientApplication.Create(_clientId, _masterId, _shellUri, _platformUri);
 

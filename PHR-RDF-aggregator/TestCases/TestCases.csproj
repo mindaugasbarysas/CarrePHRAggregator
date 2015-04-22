@@ -17,6 +17,8 @@
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
     <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,6 +38,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Health, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\HealthVault.NET.2.1.0.4\lib\net40\Microsoft.Health.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Health.ItemTypes, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\HealthVault.NET.2.1.0.4\lib\net40\Microsoft.Health.ItemTypes.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Health.ItemTypes.Old">
+      <HintPath>..\packages\HealthVault.NET.2.1.0.4\lib\net40\Microsoft.Health.ItemTypes.Old.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Health.Web">
+      <HintPath>..\packages\HealthVault.NET.2.1.0.4\lib\net40\Microsoft.Health.Web.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -52,8 +68,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="TestCases.cs" />
+    <Compile Include="RumTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CarreConfiguratorTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataSpecification\DataSpecification.csproj">
@@ -68,9 +85,17 @@
       <Project>{c9394fd3-6329-4d44-9daf-e51adbe07819}</Project>
       <Name>ResourceUnificationModule</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PHRConfigurators\PHRConfigurators.csproj">
+      <Project>{00ff71a5-0695-4bea-8f87-9e069c164ad5}</Project>
+      <Name>PHRConfigurators</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PHRPluginVivaport\PHRPlugins.csproj">
       <Project>{d6ae317e-1d8f-4871-822b-c746f481e27c}</Project>
       <Name>PHRPlugins</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ResourceConfiguration\ResourceConfiguration.csproj">
+      <Project>{e93b3ed7-96c7-428c-b4a6-d96c2c3c7035}</Project>
+      <Name>ResourceConfiguration</Name>
     </ProjectReference>
     <ProjectReference Include="..\ResourceOutput\ResourceOutput.csproj">
       <Project>{6281e159-df4f-4db7-90cc-cd81e2565fb0}</Project>
@@ -79,6 +104,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
@@ -100,6 +126,7 @@
   </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

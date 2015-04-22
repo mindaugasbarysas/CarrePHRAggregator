@@ -12,6 +12,7 @@ namespace Vulsk.CarrePhrAggregator.DataSpecification
 		public string Name { get; set; }
 		public object Value { get; set; }
 		public string OntologicName { get; set; }
+        public string Identifier { get; set; }
 
 	}
 
@@ -42,4 +43,13 @@ namespace Vulsk.CarrePhrAggregator.DataSpecification
 		public Guid InternalId { get; set; }
 		public string SourceName { get; set; }
 	}
+
+    /// <summary>
+    /// Configuration object passed to RUM modules.
+    /// </summary>
+    public class Configuration
+    {
+        public List<SourceIdentifier> Sources { get; set; }
+        public List<DataUnit> DesiredData { get; set; }
+    }
 }

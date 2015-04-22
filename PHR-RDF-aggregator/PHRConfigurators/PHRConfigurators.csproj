@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D6AE317E-1D8F-4871-822B-C746F481E27C}</ProjectGuid>
+    <ProjectGuid>{00FF71A5-0695-4BEA-8F87-9E069C164AD5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Vulsk.CarrePhrAggregator.PhrPlugins</RootNamespace>
-    <AssemblyName>Vulsk.CarrePhrAggregator.PhrPlugins</AssemblyName>
+    <RootNamespace>Vulsk.CarrePhrAggregator.PhrConfigurators</RootNamespace>
+    <AssemblyName>Vulsk.CarrePhrAggregator.PhrConfigurators</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -19,52 +19,28 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\PHR-RDF-aggregator\bin\Debug\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\PHR-RDF-aggregator\bin\Release\Plugin.PHR\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Mail">
-      <HintPath>..\packages\Mail.dll.3.0.14228.1107\lib\Mail.dll</HintPath>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Health">
-      <HintPath>..\packages\HealthVault.NET.2.1.0.3\lib\net40\Microsoft.Health.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Health.ItemTypes">
-      <HintPath>..\packages\HealthVault.NET.2.1.0.3\lib\net40\Microsoft.Health.ItemTypes.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Health.ItemTypes.Old">
-      <HintPath>..\packages\HealthVault.NET.2.1.0.3\lib\net40\Microsoft.Health.ItemTypes.Old.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Health.Web">
-      <HintPath>..\packages\HealthVault.NET.2.1.0.3\lib\net40\Microsoft.Health.Web.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="PatientSummary, Version=1.0.1.3, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libs\PatientSummary.dll</HintPath>
+    <Reference Include="Pareto.Rest.Client">
+      <HintPath>..\packages\Pareto.Rest.Client.0.0.3\lib\net451\Pareto.Rest.Client.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.Formatting">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.2\lib\net45\System.Net.Http.Formatting.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -72,9 +48,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PHRPluginEmpty.cs" />
-    <Compile Include="PHRPluginHealthVault.cs" />
-    <Compile Include="PHRPluginVivaport.cs" />
+    <Compile Include="CarreConfigurator.cs" />
+    <Compile Include="CarreRestObjects\CarreInstance.cs" />
+    <Compile Include="EmptyConfigurator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -86,13 +62,13 @@
       <Project>{06811c54-2a6f-4bb8-96b9-f01d4d5651ea}</Project>
       <Name>PHRInput</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ResourceConfiguration\ResourceConfiguration.csproj">
+      <Project>{e93b3ed7-96c7-428c-b4a6-d96c2c3c7035}</Project>
+      <Name>ResourceConfiguration</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Libs\PatientSummary.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
