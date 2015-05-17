@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Map>
+  <DataEntry>
+    <OntologicName>http://localhost/test#TestName</OntologicName>
+    <XPath><![CDATA[//TestDataUnit/TestPatientInformation/TestPatientName/text()]]></XPath>
+  </DataEntry>
+  <DataEntry>
+    <OntologicName>http://localhost/test#TestSurname</OntologicName>
+    <XPath><![CDATA[//TestDataUnit/TestPatientInformation/TestPatientSurname/text()]]></XPath>
+  </DataEntry>
+</Map>

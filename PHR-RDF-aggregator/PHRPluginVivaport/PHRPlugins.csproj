@@ -58,6 +58,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Libs\PatientSummary.dll</HintPath>
     </Reference>
+    <Reference Include="saxon9he-api">
+      <HintPath>..\packages\Saxon-HE.9.6.0.5\lib\net40\saxon9he-api.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />

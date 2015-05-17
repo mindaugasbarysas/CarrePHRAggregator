@@ -71,6 +71,7 @@
     <Compile Include="RumTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CarreConfiguratorTests.cs" />
+    <Compile Include="VivaportPluginTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataSpecification\DataSpecification.csproj">
@@ -105,6 +106,12 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Fixtures\Documents\5c30ee9a-2e63-42c7-b418-ef4fe2f3e565\DataTest2.xml" />
+    <Content Include="Fixtures\Documents\5c30ee9a-2e63-42c7-b418-ef4fe2f3e565\DataTest1.xml" />
+    <Content Include="Fixtures\mapping.xml" />
+    <Content Include="Fixtures\Patients.xml" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

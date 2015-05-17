@@ -50,12 +50,12 @@ namespace Vulsk.CarrePhrAggregator.PhrConfigurators
                 HttpClient Client = new HttpClient(api_endpoint);
                 var rawRepoData = JsonConvert.DeserializeObject<List<CarreInstance>>(Client.Get(new HttpRequestData(string.Format("instances?type={0}", type))).Data);
                 var subjects = rawRepoData.Select(p => p.subject).Where(p=>!knownUnits.Select(ku=>ku.OntologicName).Contains(p)).ToList().Distinct();
-                foreach (var p in subjects)
+                foreach (var subject in subjects)
                 {
-                    string name = rawRepoData.Where(e => (e.predicate == "http://carre.kmi.open.ac.uk/ontology/risk.owl#observable_name" && e.subject == p)).Select(e => e.obj).FirstOrDefault();
-                    string identifier = rawRepoData.Where(e => (e.predicate == "http://carre.kmi.open.ac.uk/ontology/risk.owl#has_risk_element_identifier" && e.subject == p)).Select(e => e.obj).FirstOrDefault();
+                    string name = rawRepoData.Where(e => (e.predicate == "http://carre.kmi.open.ac.uk/ontology/risk.owl#observable_name" && e.subject == subject)).Select(e => e.obj).FirstOrDefault();
+                    string identifier = rawRepoData.Where(e => (e.predicate == "http://carre.kmi.open.ac.uk/ontology/risk.owl#has_risk_element_identifier" && e.subject == subject)).Select(e => e.obj).FirstOrDefault();
                     
-                    if (knownUnits.Select(pp => pp.Identifier).Contains(identifier))
+                    if (knownUnits.Select(e => e.Identifier).Contains(identifier))
                     {
                         identifier = string.Format("{0}#duplicated#{1}#", identifier, Guid.NewGuid().ToString());
                     }
@@ -64,13 +64,13 @@ namespace Vulsk.CarrePhrAggregator.PhrConfigurators
                     {
                         continue;
                     }
-                    if (name == null) name = p;
-                    if (identifier == null) identifier = p;
+                    if (name == null) name = subject;
+                    if (identifier == null) identifier = subject;
                     knownUnits.Add(
                         new DataUnit()
                         {
                             Name = name,
-                            OntologicName = p,
+                            OntologicName = subject,
                             Identifier = identifier
                         }
                    );
