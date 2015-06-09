@@ -12,8 +12,10 @@ namespace Vulsk.CarrePhrAggregator.DataSpecification
 		public string Name { get; set; }
 		public object Value { get; set; }
 		public string OntologicName { get; set; }
+        public string OntologicClass { get; set; }
+        public string OntologicType { get; set; }
         public string Identifier { get; set; }
-
+        public SourceIdentifier Source { get; set; }
 	}
 
 	/// <summary>
@@ -51,5 +53,23 @@ namespace Vulsk.CarrePhrAggregator.DataSpecification
     {
         public List<SourceIdentifier> Sources { get; set; }
         public List<DataUnit> DesiredData { get; set; }
+    }
+
+    /// <summary>
+    /// Source priority rule item
+    /// </summary>
+    public class SourcePriority
+    {
+        public int Priority { get; set; }
+        public int NewerRecordPriority { get; set; }
+        public SourceIdentifier Source { get; set; }
+    }
+    /// <summary>
+    /// Lists unification sources by priority
+    /// </summary>
+    public class UnificationRules
+    {
+        public List<SourcePriority> SourcePriority { get; set; }
+        // Todo: add more unification rules
     }
 }

@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Xml;
 using System.Xml.XPath;
-using Saxon.Api;
+using System.Xml.Linq;
 
 namespace Vulsk.CarrePhrAggregator.PhrPlugins
 {
@@ -20,11 +20,13 @@ namespace Vulsk.CarrePhrAggregator.PhrPlugins
         private readonly SourceIdentifier _sourceId = new SourceIdentifier
         {
             InternalId = typeof(PhrPluginVivaport).GUID,
-            SourceName = "Vivaport.eu"
+            SourceName = "vivaport"
         };
 
         private Hashtable Documents = new Hashtable();
         private Hashtable DataMap = new Hashtable();
+        private Hashtable DateMap = new Hashtable();
+        private Hashtable TypeMap = new Hashtable();
         private Hashtable PatientMap = new Hashtable();
 
         /// <summary>
@@ -88,10 +90,33 @@ namespace Vulsk.CarrePhrAggregator.PhrPlugins
                 
                 foreach (XmlDocument x in (List<XmlDocument>)Documents[getPatientId(p.InternalId)])
                 {
-                    XmlNode val = x.SelectSingleNode(this.DataMap[du.OntologicName].ToString());
-                    if (val == null) { continue; }
-                    var value = val.Value;
-                    retData.Data.Add(new DataUnit() { OntologicName = du.OntologicName, Value = value, Name = du.Name, Identifier = this._sourceId.SourceName, Datetime = new DateTime() });
+                    XDocument xd = XDocument.Parse(x.OuterXml);
+                    var val = (IEnumerable)xd.XPathEvaluate(this.DataMap[du.OntologicName].ToString());
+                    DateTime dt = new DateTime();
+                    if (DateMap.ContainsKey(du.OntologicName))
+                    {
+                        var dateVal = (IEnumerable)xd.XPathEvaluate(this.DateMap[du.OntologicName].ToString());
+                        if (dateVal.Cast<XText>().FirstOrDefault() != null)
+                        {
+                            var date = dateVal.Cast<XText>().FirstOrDefault().Value;
+                            if (!DateTime.TryParse(date, out dt))
+                            {
+                                dt = DateTime.Parse("1900-01-01");
+                            }
+                        }
+                        else 
+                        { 
+                            dt = DateTime.Parse("1900-01-01"); 
+                        }
+                    }
+                    string type = "string";
+                    if (TypeMap.ContainsKey(du.OntologicName))
+                    {
+                        type = TypeMap[du.OntologicName].ToString();
+                    }
+                    if (val.Cast<XText>().FirstOrDefault() == null) { continue; }
+                    var value = val.Cast<XText>().FirstOrDefault().Value;
+                    retData.Data.Add(new DataUnit() { OntologicName = du.OntologicName, Value = value, Name = du.Name, Identifier = this._sourceId.SourceName, Datetime = dt, OntologicType = type });
                 }
             }
             return retData;
@@ -114,7 +139,23 @@ namespace Vulsk.CarrePhrAggregator.PhrPlugins
             return this.DataMap;
         }
         /// <summary>
-        /// Getse documents loaded.
+        /// Gets date map.
+        /// </summary>
+        /// <returns>data map</returns>
+        public Hashtable GetDateMap()
+        {
+            return this.DateMap;
+        }
+        /// <summary>
+        /// Gets date map.
+        /// </summary>
+        /// <returns>data map</returns>
+        public Hashtable GetTypeMap()
+        {
+            return this.TypeMap;
+        }
+        /// <summary>
+        /// Gets documents loaded.
         /// </summary>
         /// <returns>documents loaded.</returns>
         public Hashtable GetDocuments()
@@ -177,6 +218,14 @@ namespace Vulsk.CarrePhrAggregator.PhrPlugins
                 if (!this.DataMap.ContainsKey(node.SelectSingleNode("OntologicName").InnerText))
                 {
                     this.DataMap.Add(node.SelectSingleNode("OntologicName").InnerText, node.SelectSingleNode("XPath").InnerText);
+                }
+                if (!this.DateMap.ContainsKey(node.SelectSingleNode("OntologicName").InnerText) && node.SelectSingleNode("DateXPath") != null)
+                {
+                    this.DateMap.Add(node.SelectSingleNode("OntologicName").InnerText, node.SelectSingleNode("DateXPath").InnerText);
+                }
+                if (!this.TypeMap.ContainsKey(node.SelectSingleNode("OntologicName").InnerText) && node.SelectSingleNode("Type") != null)
+                {
+                    this.TypeMap.Add(node.SelectSingleNode("OntologicName").InnerText, node.SelectSingleNode("Type").InnerText);
                 }
             }
         }

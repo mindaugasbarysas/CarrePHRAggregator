@@ -15,7 +15,7 @@ namespace Vulsk.CarrePhrAggregator.PhrPlugins
 	public class PhrPluginEmpty : IPhrInput
 	{
 		private readonly SourceIdentifier _sourceId = new SourceIdentifier {
-            InternalId = typeof(PhrPluginEmpty).GUID,
+            InternalId = new Guid("5c30ee9a-2e63-42c7-b418-ef4fe2f3e565"),
 			SourceName = "FakeTestSource"
 		};
 		public SourceIdentifier Source { get { return _sourceId; } }

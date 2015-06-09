@@ -54,6 +54,9 @@
     <Reference Include="RDFSharp">
       <HintPath>..\packages\RDFSharp.0.6.10.6\lib\net40\RDFSharp.dll</HintPath>
     </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\packages\RestSharp.105.1.0\lib\net451\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -68,6 +71,7 @@
   <ItemGroup>
     <Compile Include="RUM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Unification\Unificator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -88,6 +92,10 @@
     <ProjectReference Include="..\ResourceConfiguration\ResourceConfiguration.csproj">
       <Project>{e93b3ed7-96c7-428c-b4a6-d96c2c3c7035}</Project>
       <Name>ResourceConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ResourceOutput\ResourceOutput.csproj">
+      <Project>{6281e159-df4f-4db7-90cc-cd81e2565fb0}</Project>
+      <Name>ResourceOutput</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

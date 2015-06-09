@@ -55,7 +55,7 @@ namespace Vulsk.CarrePhrAggregator.PhrConfigurators
                     string name = rawRepoData.Where(e => (e.predicate == "http://carre.kmi.open.ac.uk/ontology/risk.owl#observable_name" && e.subject == subject)).Select(e => e.obj).FirstOrDefault();
                     string identifier = rawRepoData.Where(e => (e.predicate == "http://carre.kmi.open.ac.uk/ontology/risk.owl#has_risk_element_identifier" && e.subject == subject)).Select(e => e.obj).FirstOrDefault();
                     
-                    if (knownUnits.Select(e => e.Identifier).Contains(identifier))
+                    if (knownUnits.Where(e=>e.OntologicClass == type).Select(e => e.Identifier).Contains(identifier))
                     {
                         identifier = string.Format("{0}#duplicated#{1}#", identifier, Guid.NewGuid().ToString());
                     }
@@ -71,6 +71,7 @@ namespace Vulsk.CarrePhrAggregator.PhrConfigurators
                         {
                             Name = name,
                             OntologicName = subject,
+                            OntologicClass = type,
                             Identifier = identifier
                         }
                    );

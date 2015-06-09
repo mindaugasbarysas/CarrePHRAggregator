@@ -19,6 +19,8 @@ namespace TestCases
             Assert.IsTrue(ppV.GetMap().ContainsKey("http://localhost/test#TestName"));
             Assert.IsTrue(ppV.GetMap().ContainsKey("http://localhost/test#TestSurname"));
             Assert.AreEqual(ppV.GetMap()["http://localhost/test#TestName"], "//TestDataUnit/TestPatientInformation/TestPatientName/text()");
+            Assert.IsTrue(ppV.GetTypeMap().ContainsKey("http://localhost/test#TestSurname"));
+            Assert.AreEqual(ppV.GetTypeMap()["http://localhost/test#TestSurname"], "strong");
         }
         [TestMethod]
         public void TestDocumentLoader()
@@ -52,7 +54,10 @@ namespace TestCases
             PhrPluginVivaport ppV = new PhrPluginVivaport("../../Fixtures/mapping.xml", "../../Fixtures/Documents", "../../Fixtures/Patients.xml");
             PhrData data = ppV.GetData(new PatientIdentifier(){ InternalId = new Guid(PGuid) }, config);
             Assert.IsTrue((string)data.Data.Find(du => du.Name == "name").Value == "TestName");
+            Assert.IsTrue((DateTime)data.Data.Find(du => du.Name == "name").Datetime == DateTime.Parse("1901-01-01"));
             Assert.IsTrue((string)data.Data.Find(du => du.Name == "surname").Value == "TestSurname");
+            Assert.IsTrue((DateTime)data.Data.Find(du => du.Name == "surname").Datetime == DateTime.Parse("1900-01-01"));
+            Assert.IsTrue(data.Data.Find(du => du.Name == "surname").OntologicType == "strong");
         }
     }
 }

@@ -11,12 +11,25 @@ namespace Vulsk.CarrePhrAggregator.Rum
 {
 	using DataSpecification;
     using Vulsk.CarrePhrAggregator.ResourceConfiguration;
-
+    using Vulsk.CarrePhrAggregator.ResourceOutput;
 	public class Rum
 	{
 		private readonly List<IPhrInput> _availablePhrs = new List<IPhrInput>();
 
         private readonly List<IConfiguration> _availableConfigurators = new List<IConfiguration>();
+
+        private readonly List<IOutput> _availableOutputs = new List<IOutput>();
+
+        private string patientPath = "../configuration/vivaportPatientMap.xml";
+
+        public string PatientListLocation { get { return patientPath; } set { patientPath = value; } }
+
+        public SourceIdentifier Source { get { return _sourceId; } }
+        private readonly SourceIdentifier _sourceId = new SourceIdentifier
+        {
+            InternalId = typeof(Rum).GUID,
+            SourceName = "RUM"
+        };
 
         /// <summary>
         /// Production constructor of RUM, loading fake configurators disabled.
@@ -63,8 +76,46 @@ namespace Vulsk.CarrePhrAggregator.Rum
             ).ToArray();
 
             _availablePhrs.AddRange(ipi.Select(i => (IPhrInput)i));
+
+            var outputs = (
+                from file in pluginFiles
+                let asm = Assembly.LoadFile(file)
+                from type in asm.GetExportedTypes()
+                where typeof(IOutput).IsAssignableFrom(type) && type != typeof(IOutput)
+                select Activator.CreateInstance(type)
+                ).ToArray();
+            
+            _availableOutputs.AddRange(outputs.Select(i => (IOutput)i));
 		}
 
+        private List<PatientIdentifier> GetPatients()
+        {
+            List<PatientIdentifier> patients = new List<PatientIdentifier>();
+            if (File.Exists(this.PatientListLocation))
+            {
+                XmlDocument xdoc = new XmlDocument();
+                xdoc.Load(this.PatientListLocation);
+                XmlNodeList nodes = xdoc.SelectNodes("//Patient");
+                foreach (XmlNode node in nodes)
+                {
+                    patients.Add(new PatientIdentifier() { InternalId = new Guid(node.SelectSingleNode("Internal").InnerText) });
+                }
+            }
+
+            return patients;
+        }
+
+        public void Run()
+        {
+            foreach (PatientIdentifier p in GetPatients())
+            {
+                foreach (IOutput o in _availableOutputs)
+                {
+                    o.Output(GetPatientData(p));
+                    // Future improvement: logging.
+                }
+            }
+        }
 
 		public List<PhrData> GetPatientData(PatientIdentifier p)
 		{
@@ -116,6 +167,11 @@ namespace Vulsk.CarrePhrAggregator.Rum
         public List<IConfiguration> getConfigurators()
         {
             return _availableConfigurators;
+        }
+
+        public List<IOutput> getOutputs()
+        {
+            return _availableOutputs;
         }
 	}
 }

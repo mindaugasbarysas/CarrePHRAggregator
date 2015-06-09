@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Sources>
+  <Source>
+    <Priority>10</Priority>
+    <SourceGuid>5c30ee9a-2e63-42c7-b418-ef4fe2f3e565</SourceGuid>
+    <SourceName>Test source 10</SourceName>
+    <NewerRecordPriority>10</NewerRecordPriority>
+  </Source>
+  <Source>
+    <Priority>20</Priority>
+    <SourceGuid>5c30ee9a-2e63-42c7-b418-ef4fe2f3e566</SourceGuid>
+    <SourceName>Test source 20</SourceName>
+    <NewerRecordPriority>10</NewerRecordPriority>
+  </Source>
+</Sources>

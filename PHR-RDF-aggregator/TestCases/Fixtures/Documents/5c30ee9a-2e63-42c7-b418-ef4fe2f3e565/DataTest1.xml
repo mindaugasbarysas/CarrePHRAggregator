@@ -2,5 +2,6 @@
 <TestDataUnit>
   <TestPatientInformation>
     <TestPatientName>TestName</TestPatientName>
+    <TestPatientDate>1901-01-01</TestPatientDate>
   </TestPatientInformation>
 </TestDataUnit>
